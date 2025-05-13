@@ -1,8 +1,8 @@
 package br.com.alura.screenmatch.main;
 
-import br.com.alura.screenmatch.model.Episode;
-import br.com.alura.screenmatch.model.Season;
-import br.com.alura.screenmatch.model.Serie;
+import br.com.alura.screenmatch.model.EpisodeData;
+import br.com.alura.screenmatch.model.SeasonData;
+import br.com.alura.screenmatch.model.SerieData;
 import br.com.alura.screenmatch.service.Api;
 import br.com.alura.screenmatch.service.ConvertData;
 
@@ -24,27 +24,27 @@ public class Main {
         System.out.println("Digite o nome da serie: ");
         var titleSerie = scanner.nextLine();
         var json = api.getData(URL + titleSerie.replace(" ", "+") + APIKEY);
-        var serie = convertData.getData(json, Serie.class);
+        var serie = convertData.getData(json, SerieData.class);
         System.out.println(serie);
 
-        List<Season> seasonList = new ArrayList<>();
+        List<SeasonData> seasonDataList = new ArrayList<>();
         for (int i = 1; i <= serie.totalSeasons(); i++) {
             json = api.getData(URL + titleSerie.replace(" ", "+") + APIKEY + "&season=" + i);
-            Season season = convertData.getData(json, Season.class);
-            seasonList.add(season);
+            SeasonData seasonData = convertData.getData(json, SeasonData.class);
+            seasonDataList.add(seasonData);
         }
-        seasonList.forEach(System.out::println);
+        seasonDataList.forEach(System.out::println);
 
-        seasonList.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));//lambdas no java
+        seasonDataList.forEach(s -> s.episodeData().forEach(e -> System.out.println(e.title())));//lambdas no java
 
-        List<Episode> episodeList = seasonList.stream()
-                .flatMap(s -> s.episodes().stream())
+        List<EpisodeData> episodeDataList = seasonDataList.stream()
+                .flatMap(s -> s.episodeData().stream())
                 .collect(Collectors.toList());
 
         System.out.println("\n Top cinco episodios");
-        episodeList.stream()
+        episodeDataList.stream()
                 .filter(e -> !e.avaliation().equalsIgnoreCase("N/A"))
-                .sorted(Comparator.comparing(Episode::avaliation).reversed())
+                .sorted(Comparator.comparing(EpisodeData::avaliation).reversed())
                 .limit(5)
                 .forEach(System.out::println);
     }
