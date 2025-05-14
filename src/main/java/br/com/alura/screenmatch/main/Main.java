@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch.main;
 
+import br.com.alura.screenmatch.model.Episode;
 import br.com.alura.screenmatch.model.EpisodeData;
 import br.com.alura.screenmatch.model.SeasonData;
 import br.com.alura.screenmatch.model.SerieData;
@@ -47,5 +48,11 @@ public class Main {
                 .sorted(Comparator.comparing(EpisodeData::avaliation).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+
+        List<Episode> episodeList = seasonDataList.stream()
+                .flatMap(s -> s.episodeData().stream()
+                        .map(e -> new Episode(s.number(), e)))
+                .collect(Collectors.toList());
+        System.out.println(episodeList);
     }
 }
