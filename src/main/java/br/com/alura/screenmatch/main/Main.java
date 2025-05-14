@@ -60,18 +60,18 @@ public class Main {
                 .collect(Collectors.toList());
         System.out.println(episodeList);
 
-        System.out.println("Qual episodio voce deseja buscar?");
-        var searchTitle = scanner.nextLine();
-        Optional<Episode> episodeOptional = episodeList.stream()
-                .filter(e -> e.getTitle().toUpperCase().contains(searchTitle.toUpperCase()))
-                .findFirst();
-
-        if (episodeOptional.isPresent()) {
-            System.out.println("Episodio encontrado: " + episodeOptional.get().getTitle());
-            System.out.println("Temporada: " + episodeOptional.get().getSeason());
-        } else {
-            System.out.println("Episodio nao encontrado");
-        }
+//        System.out.println("Qual episodio voce deseja buscar?");
+//        var searchTitle = scanner.nextLine();
+//        Optional<Episode> episodeOptional = episodeList.stream()
+//                .filter(e -> e.getTitle().toUpperCase().contains(searchTitle.toUpperCase()))
+//                .findFirst();
+//
+//        if (episodeOptional.isPresent()) {
+//            System.out.println("Episodio encontrado: " + episodeOptional.get().getTitle());
+//            System.out.println("Temporada: " + episodeOptional.get().getSeason());
+//        } else {
+//            System.out.println("Episodio nao encontrado");
+//        }
 
 //
 //        System.out.println("A partir de qual ano voce deseja ver os episodios? ");
@@ -87,5 +87,11 @@ public class Main {
 //                                " Episodio: " + e.getTitle() +
 //                                " Data lancamento: " + e.getReleasedDate().format(formatter)
 //                ));
+
+        Map<Integer, Double> seasonsAvaliations = episodeList.stream()
+                .filter(e -> e.getAvaliation() != 0)
+                .collect(Collectors.groupingBy(Episode::getSeason,
+                        Collectors.averagingDouble(Episode::getAvaliation)));
+        System.out.println(seasonsAvaliations);
     }
 }
