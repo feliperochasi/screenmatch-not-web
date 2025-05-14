@@ -7,6 +7,8 @@ import br.com.alura.screenmatch.model.SerieData;
 import br.com.alura.screenmatch.service.Api;
 import br.com.alura.screenmatch.service.ConvertData;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Main {
     private final Scanner scanner = new Scanner(System.in);
     private final Api api = new Api();
     private final ConvertData convertData = new ConvertData();
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public void showSerie() {
         System.out.println("Digite o nome da serie: ");
@@ -40,7 +43,7 @@ public class Main {
 
         List<EpisodeData> episodeDataList = seasonDataList.stream()
                 .flatMap(s -> s.episodeData().stream())
-                .collect(Collectors.toList());
+                .toList();
 
         System.out.println("\n Top cinco episodios");
         episodeDataList.stream()
@@ -54,5 +57,19 @@ public class Main {
                         .map(e -> new Episode(s.number(), e)))
                 .collect(Collectors.toList());
         System.out.println(episodeList);
+
+        System.out.println("A partir de qual ano voce deseja ver os episodios? ");
+        var year = scanner.nextInt();
+        scanner.nextLine();
+
+        LocalDate searchDate = LocalDate.of(year, 1, 1);
+
+        episodeList.stream()
+                .filter(e -> e.getReleasedDate() != null && e.getReleasedDate().isAfter(searchDate))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getSeason() +
+                                " Episodio: " + e.getTitle() +
+                                " Data lancamento: " + e.getReleasedDate().format(formatter)
+                ));
     }
 }
