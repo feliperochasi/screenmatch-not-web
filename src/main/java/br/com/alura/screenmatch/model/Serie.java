@@ -1,5 +1,7 @@
 package br.com.alura.screenmatch.model;
 
+import br.com.alura.screenmatch.service.ChatGPT;
+
 import java.util.OptionalDouble;
 
 public class Serie {
@@ -21,7 +23,7 @@ public class Serie {
         this.genre = Category.fromString(serieData.genre().split(",")[0].trim());
         this.director = serieData.director();
         this.actors = serieData.actors();
-        this.plot = serieData.plot();
+        this.plot = ChatGPT.getText(serieData.plot()).trim();
         this.language = serieData.language();
         this.awards = serieData.awards();
         this.poster = serieData.poster();
