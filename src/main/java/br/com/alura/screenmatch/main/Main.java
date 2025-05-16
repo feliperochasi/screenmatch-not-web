@@ -1,6 +1,7 @@
 package br.com.alura.screenmatch.main;
 
 import br.com.alura.screenmatch.model.SeasonData;
+import br.com.alura.screenmatch.model.Serie;
 import br.com.alura.screenmatch.model.SerieData;
 import br.com.alura.screenmatch.service.Api;
 import br.com.alura.screenmatch.service.ConvertData;
@@ -80,6 +81,8 @@ public class Main {
     }
 
     private void listSearchedSeries() {
-        serieData.forEach(System.out::println);
+        List<Serie> series = new ArrayList<>();
+        series = serieData.stream().map(Serie::new).toList();
+        series.stream().sorted(Comparator.comparing(Serie::getGenre)).forEach(System.out::println);
     }
 }
