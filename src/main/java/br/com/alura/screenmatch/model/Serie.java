@@ -3,6 +3,8 @@ package br.com.alura.screenmatch.model;
 import br.com.alura.screenmatch.service.ChatGPT;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity
@@ -23,6 +25,8 @@ public class Serie {
     private String language;
     private String awards;
     private String poster;
+    @Transient
+    private List<Episode> episodes = new ArrayList<>();
 
     public Serie(SerieData serieData) {
         this.title = serieData.title();
@@ -35,6 +39,14 @@ public class Serie {
         this.language = serieData.language();
         this.awards = serieData.awards();
         this.poster = serieData.poster();
+    }
+
+    public List<Episode> getEpisodes() {
+        return episodes;
+    }
+
+    public void setEpisodes(List<Episode> episodes) {
+        this.episodes = episodes;
     }
 
     public Long getId() {

@@ -3,6 +3,7 @@ package br.com.alura.screenmatch.main;
 import br.com.alura.screenmatch.model.SeasonData;
 import br.com.alura.screenmatch.model.Serie;
 import br.com.alura.screenmatch.model.SerieData;
+import br.com.alura.screenmatch.repository.SerieRepository;
 import br.com.alura.screenmatch.service.Api;
 import br.com.alura.screenmatch.service.ConvertData;
 
@@ -18,6 +19,10 @@ public class Main {
     private final ConvertData convertData = new ConvertData();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private List<SerieData> serieData = new ArrayList<>();
+    private SerieRepository repository;
+    public Main(SerieRepository repository) {
+        this.repository = repository;
+    }
 
     public void showMenu() {
         var option = -1;
@@ -55,7 +60,8 @@ public class Main {
 
     private void searchSerieWeb() {
         SerieData data = getSerieData();
-        serieData.add(data);
+        //serieData.add(data);
+        repository.save(new Serie(data));
         System.out.println(data);
     }
 

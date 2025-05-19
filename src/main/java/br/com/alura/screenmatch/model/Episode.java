@@ -2,7 +2,6 @@ package br.com.alura.screenmatch.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 
 public class Episode {
     private Integer season;
