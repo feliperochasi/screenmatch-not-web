@@ -25,7 +25,7 @@ public class Serie {
     private String language;
     private String awards;
     private String poster;
-    @OneToMany(mappedBy = "serie")
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     private List<Episode> episodes = new ArrayList<>();
 
     public Serie() {}
