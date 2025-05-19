@@ -34,7 +34,7 @@ public class Main {
                 1 - Buscar series
                 2 - Buscar episódios
                 3 - Listar series
-                
+                4 - Buscar serie por titulo
                 0 - sair
                 """;
             System.out.println(menu);
@@ -51,6 +51,9 @@ public class Main {
                     break;
                 case 3:
                     listSearchedSeries();
+                    break;
+                case 4:
+                    searchSerieFromTitle();
                     break;
                 case 0:
                     System.out.println("Encerrando.....");
@@ -81,10 +84,7 @@ public class Main {
         System.out.println("Digite a serie que deseja buscar os episodios");
         var serieName = scanner.nextLine();
 
-        Optional<Serie> serie = serieList.stream()
-                .filter(s -> s.getTitle().toLowerCase().contains(serieName.toLowerCase()))
-                .findFirst();
-
+        Optional<Serie> serie = repository.findByTitleContainingIgnoreCase(serieName);
         if(serie.isPresent()) {
             var searchedSerie = serie.get();
             List<SeasonData> seasonDataList = new ArrayList<>();
@@ -110,5 +110,18 @@ public class Main {
     private void listSearchedSeries() {
         serieList = repository.findAll();
         serieList.stream().sorted(Comparator.comparing(Serie::getGenre)).forEach(System.out::println);
+    }
+
+    private void searchSerieFromTitle() {
+        System.out.println("Digite a serie que deseja buscar os episodios");
+        var serieName = scanner.nextLine();
+        Optional<Serie> resultSerie = repository.findByTitleContainingIgnoreCase(serieName);
+
+        if (resultSerie.isPresent()) {
+            System.out.println("Resultado para busca dessa serie: " + resultSerie.get().getTitle());
+            System.out.println(resultSerie.get());
+        } else {
+            System.out.println("Serie nao encontrada");
+        }
     }
 }
