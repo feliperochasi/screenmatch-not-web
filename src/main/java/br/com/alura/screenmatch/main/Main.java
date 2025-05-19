@@ -35,6 +35,7 @@ public class Main {
                 5 - Buscar series por ator
                 6 - Top 5 series
                 7 - Buscar serie por categoria
+                8 - Maratonar
                 0 - sair
                 """;
             System.out.println(menu);
@@ -63,6 +64,9 @@ public class Main {
                     break;
                 case 7:
                     searchFromCategory();
+                    break;
+                case 8:
+                    searchMarathon();
                     break;
                 case 0:
                     System.out.println("Encerrando.....");
@@ -162,6 +166,24 @@ public class Main {
         System.out.println("Series por categoria " + category);
         seriesFromCategory.forEach(s -> {
             System.out.println(s.getTitle() + " genero: " + s.getGenre());
+        });
+    }
+
+    private void searchMarathon() {
+        System.out.println("""
+                Vamos preparar a serie para voce maratonar
+                Mas antes precisamos de algumas informacoes
+                """);
+        System.out.println("Qual o maximo de temporadas que voce deseja? ");
+        var seasonLimit = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Qual a avaliacao minima");
+        var minAvaliation = scanner.nextDouble();
+        scanner.nextLine();
+
+        List<Serie> marathonSeries = repository.findByTotalSeasonsLessThanEqualAndAvaliationGreaterThanEqualOrderByTotalSeasons(seasonLimit, minAvaliation);
+        marathonSeries.forEach(s -> {
+            System.out.println(s.getTitle() + " quantidade de temporadas: " + s.getTotalSeasons() + " avaliacao: " + s.getAvaliation());
         });
     }
 }
