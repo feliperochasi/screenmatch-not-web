@@ -25,7 +25,7 @@ public class Serie {
     private String language;
     private String awards;
     private String poster;
-    @Transient
+    @OneToMany(mappedBy = "serie")
     private List<Episode> episodes = new ArrayList<>();
 
     public Serie() {}
