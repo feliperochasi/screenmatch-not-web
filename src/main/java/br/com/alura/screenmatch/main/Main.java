@@ -36,6 +36,7 @@ public class Main {
                 3 - Listar series
                 4 - Buscar serie por titulo
                 5 - Buscar series por ator
+                6 - Top 5 series
                 0 - sair
                 """;
             System.out.println(menu);
@@ -58,6 +59,9 @@ public class Main {
                     break;
                 case 5:
                     searchSerieFromActor();
+                    break;
+                case 6:
+                    searchTopSeries();
                     break;
                 case 0:
                     System.out.println("Encerrando.....");
@@ -137,6 +141,13 @@ public class Main {
         List<Serie> searchedSeries = repository.findByActorsContainingIgnoreCaseAndAvaliationGreaterThanEqual(name, avaliation);
         System.out.println("Serie com " + name);
         searchedSeries.forEach(s -> {
+            System.out.println(s.getTitle() + " avaliacao: " + s.getAvaliation());
+        });
+    }
+
+    private void searchTopSeries() {
+        List<Serie> topSeries = repository.findTop5ByOrderByAvaliationDesc();
+        topSeries.forEach(s -> {
             System.out.println(s.getTitle() + " avaliacao: " + s.getAvaliation());
         });
     }
