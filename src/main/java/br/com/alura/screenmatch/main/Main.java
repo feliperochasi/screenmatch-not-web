@@ -36,6 +36,7 @@ public class Main {
                 6 - Top 5 series
                 7 - Buscar serie por categoria
                 8 - Maratonar
+                9 - Buscar episodios
                 0 - sair
                 """;
             System.out.println(menu);
@@ -67,6 +68,9 @@ public class Main {
                     break;
                 case 8:
                     searchMarathon();
+                    break;
+                case 9:
+                    searchEpFromText();
                     break;
                 case 0:
                     System.out.println("Encerrando.....");
@@ -184,6 +188,17 @@ public class Main {
         List<Serie> marathonSeries = repository.serieForMarathon(seasonLimit, minAvaliation);
         marathonSeries.forEach(s -> {
             System.out.println(s.getTitle() + " quantidade de temporadas: " + s.getTotalSeasons() + " avaliacao: " + s.getAvaliation());
+        });
+    }
+
+    private void searchEpFromText() {
+        System.out.println("Qual o nome do episodio para busca?");
+        var text = scanner.nextLine();
+        List<Episode> episodeList = repository.episodesFromText(text);
+        episodeList.forEach(e -> {
+            System.out.printf("Serie: %s Temporada %s - Episodio %s - %s\n",
+                    e.getSerie().getTitle(), e.getSeason(),
+                    e.getNumberEp(), e.getTitle());
         });
     }
 }
