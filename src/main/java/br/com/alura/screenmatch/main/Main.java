@@ -20,6 +20,7 @@ public class Main {
     private List<SerieData> serieData = new ArrayList<>();
     private SerieRepository repository;
     private List<Serie> serieList = new ArrayList<>();
+    private Optional<Serie> resultSerie;
     public Main(SerieRepository repository) {
         this.repository = repository;
     }
@@ -37,6 +38,7 @@ public class Main {
                 7 - Buscar serie por categoria
                 8 - Maratonar
                 9 - Buscar episodios
+                10 - Buscar top episodios
                 0 - sair
                 """;
             System.out.println(menu);
@@ -71,6 +73,9 @@ public class Main {
                     break;
                 case 9:
                     searchEpFromText();
+                    break;
+                case 10:
+                    searchTopEpisodesForSeries();
                     break;
                 case 0:
                     System.out.println("Encerrando.....");
@@ -132,7 +137,7 @@ public class Main {
     private void searchSerieFromTitle() {
         System.out.println("Digite a serie que deseja buscar os episodios");
         var serieName = scanner.nextLine();
-        Optional<Serie> resultSerie = repository.findByTitleContainingIgnoreCase(serieName);
+        resultSerie = repository.findByTitleContainingIgnoreCase(serieName);
 
         if (resultSerie.isPresent()) {
             System.out.println("Resultado para busca dessa serie: " + resultSerie.get().getTitle());
@@ -200,5 +205,18 @@ public class Main {
                     e.getSerie().getTitle(), e.getSeason(),
                     e.getNumberEp(), e.getTitle());
         });
+    }
+
+    private void searchTopEpisodesForSeries() {
+        searchSerieFromTitle();
+        if (resultSerie.isPresent()) {
+            Serie serie = resultSerie.get();
+            List<Episode> topEpisodes = repository.topEpisodesForSerie(serie);
+            topEpisodes.forEach(e -> {
+                System.out.printf("Serie: %s Temporada %s - Episodio %s - %s - %s\n",
+                        e.getSerie().getTitle(), e.getSeason(),
+                        e.getNumberEp(), e.getTitle(), e.getAvaliation());
+            });
+        }
     }
 }
