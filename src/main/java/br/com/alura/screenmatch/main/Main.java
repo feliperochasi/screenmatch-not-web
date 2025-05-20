@@ -181,7 +181,7 @@ public class Main {
         var minAvaliation = scanner.nextDouble();
         scanner.nextLine();
 
-        List<Serie> marathonSeries = repository.findByTotalSeasonsLessThanEqualAndAvaliationGreaterThanEqualOrderByTotalSeasons(seasonLimit, minAvaliation);
+        List<Serie> marathonSeries = repository.serieForMarathon(seasonLimit, minAvaliation);
         marathonSeries.forEach(s -> {
             System.out.println(s.getTitle() + " quantidade de temporadas: " + s.getTotalSeasons() + " avaliacao: " + s.getAvaliation());
         });
