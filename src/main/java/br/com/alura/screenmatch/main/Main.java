@@ -39,6 +39,7 @@ public class Main {
                 8 - Maratonar
                 9 - Buscar episodios
                 10 - Buscar top episodios
+                11 - Episodes por data
                 0 - sair
                 """;
             System.out.println(menu);
@@ -76,6 +77,9 @@ public class Main {
                     break;
                 case 10:
                     searchTopEpisodesForSeries();
+                    break;
+                case 11:
+                    searchEpisodesFromDate();
                     break;
                 case 0:
                     System.out.println("Encerrando.....");
@@ -216,6 +220,23 @@ public class Main {
                 System.out.printf("Serie: %s Temporada %s - Episodio %s - %s - %s\n",
                         e.getSerie().getTitle(), e.getSeason(),
                         e.getNumberEp(), e.getTitle(), e.getAvaliation());
+            });
+        }
+    }
+
+    private void searchEpisodesFromDate() {
+        searchSerieFromTitle();
+        if (resultSerie.isPresent()) {
+            System.out.println("Digite o ano limite de lancamento");
+            var serie = resultSerie.get();
+            var limitYear = scanner.nextInt();
+            scanner.nextLine();
+
+            List<Episode> episodeList = repository.episodesForSerieAndForYear(limitYear, serie);
+            episodeList.forEach(e -> {
+                System.out.printf("Serie: %s Temporada %s - Episodio %s - %s - %s\n",
+                        e.getSerie().getTitle(), e.getSeason(),
+                        e.getNumberEp(), e.getTitle(), e.getReleasedDate());
             });
         }
     }
